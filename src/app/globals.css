@@ -1,26 +1,131 @@
 @import "tailwindcss";
 
+/* ─── Design System: The Brutalist Boutique ──────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #3525cd;
+  --primary-alt: #4f46e5;
+  --surface: #f9f9f7;
+  --surface-low: #f4f4f2;
+  --surface-lowest: #ffffff;
+  --surface-bright: #ffffff;
+  --on-surface: #1a1c1b;
+  --outline-variant: rgba(26, 28, 27, 0.3);
+  --error: #c0392b;
+
+  /* Legacy aliases kept for any residual references */
+  --color-background: var(--surface);
+  --color-foreground: var(--on-surface);
+  --color-surface: var(--surface-lowest);
+  --color-surface-muted: var(--surface-low);
+  --color-border: var(--outline-variant);
+  --color-muted-foreground: rgba(26, 28, 27, 0.5);
+  --color-accent: var(--primary);
+  --color-accent-soft: rgba(53, 37, 205, 0.08);
+  --color-accent-foreground: #ffffff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--surface);
+  --color-foreground: var(--on-surface);
+  --font-sans: var(--font-plus-jakarta);
+  --font-display: var(--font-epilogue);
+  --font-mono: var(--font-space-grotesk);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Reset & base ──────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--surface);
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: var(--font-plus-jakarta), system-ui, sans-serif;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ─── Typography utilities ──────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-epilogue), system-ui, sans-serif;
+}
+
+.font-data {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+/* ─── Brutalist button hover ────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  background: var(--primary);
+  color: #ffffff;
+  border-radius: 0px;
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px) translateX(-2px);
+  box-shadow: 2px 2px 0px var(--on-surface);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  background: transparent;
+  color: var(--on-surface);
+  border-radius: 0px;
+  border: 1px solid var(--outline-variant);
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.25rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  transform: translateY(-2px) translateX(-2px);
+  box-shadow: 2px 2px 0px var(--on-surface);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ─── Skeleton pulse ────────────────────────────────────────────────── */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
