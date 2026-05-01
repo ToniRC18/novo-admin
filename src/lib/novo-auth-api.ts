@@ -100,26 +100,40 @@ function normalizeAccesos(value: unknown): AccesosAdmin {
 }
 
 function normalizeUsuario(rawValue: unknown): UsuarioAdmin {
-  const raw = toRecord(rawValue);
-  const negocioRaw = toRecord(raw.negocio);
+  const source = toRecord(rawValue);
+
+  // El API puede devolver el usuario directamente (en listas)
+  // o un objeto { usuario, negocio, accesos, productos } (en detalle)
+  const raw = source.usuario ? toRecord(source.usuario) : source;
+  const negocioRaw = source.negocio ? toRecord(source.negocio) : null;
+
+  const negocioId =
+    getFirstString(raw, ["negocioId", "negocio_id"]) ||
+    (negocioRaw ? getFirstString(negocioRaw, ["id"]) : "");
+
+  const negocioNombre =
+    (negocioRaw ? getFirstString(negocioRaw, ["nombre", "name"]) : "") ||
+    getFirstString(source, ["negocioNombre"]);
 
   return {
     id: getFirstString(raw, ["id", "usuarioId"]),
     nombre: getFirstString(raw, ["nombre", "name", "fullName"], "Sin nombre"),
     email: getFirstString(raw, ["email", "correo"], "Sin email"),
     rolGlobal: getFirstString(raw, ["rolGlobal", "rol_global", "rol"], "Sin rol"),
-    productos: getFirstStringArray(raw, ["productos", "productosActivos", "productos_activos"]),
-    negocioId:
-      getFirstString(raw, ["negocioId", "negocio_id"]) ||
-      getFirstString(negocioRaw, ["id"]) ||
-      null,
-    negocio: negocioRaw.id || negocioRaw.nombre
-      ? {
-          id: getFirstString(negocioRaw, ["id"]),
-          nombre: getFirstString(negocioRaw, ["nombre", "name"], "Sin negocio"),
-        }
-      : null,
-    accesos: normalizeAccesos(raw.accesos),
+    productos: getFirstStringArray(raw, [
+      "productos",
+      "productosActivos",
+      "productos_activos",
+    ]),
+    negocioId: negocioId || null,
+    negocio:
+      negocioId || negocioNombre
+        ? {
+            id: negocioId,
+            nombre: negocioNombre || "Sin negocio",
+          }
+        : null,
+    accesos: normalizeAccesos(source.accesos || raw.accesos),
   };
 }
 
@@ -136,7 +150,15 @@ function normalizeNegocio(rawValue: unknown): NegocioAdmin {
     nombre: getFirstString(raw, ["nombre", "name"], "Sin nombre"),
     plan: getFirstString(raw, ["plan"], "Sin plan"),
     productosActivos: productos,
-    fechaRegistro: getFirstString(raw, ["fechaRegistro", "fecha_registro", "createdAt", "created_at"]) || null,
+    fechaRegistro:
+      getFirstString(raw, [
+        "fechaRegistro",
+        "fecha_registro",
+        "creadoEn",
+        "creado_en",
+        "createdAt",
+        "created_at",
+      ]) || null,
     usuarios: toArray(raw.usuarios).map(normalizeUsuario),
   };
 }
@@ -197,28 +219,38 @@ async function requestNovoAuth<T>(
       };
     }
 
-    const payload = (await response.json()) as unknown;
+    const payload = (await response.json()) as { ok?: boolean; data?: unknown };
+    const data =
+      payload && typeof payload === "object" && payload.ok && "data" in payload
+        ? payload.data
+        : payload;
+
     return {
       ok: true,
-      data: map ? map(payload) : (payload as T),
+      data: map ? map(data) : (data as T),
     };
   } catch (error) {
     return {
       ok: false,
-      message: error instanceof Error ? error.message : "Unable to reach novo-auth-api",
+      message:
+        error instanceof Error ? error.message : "Unable to reach novo-auth-api",
     };
   }
 }
 
 export async function getNegocios(params?: { plan?: "cards" | "pos" | "suite" }) {
   const query = params?.plan ? `?plan=${params.plan}` : "";
-  return requestNovoAuth<NegocioAdmin[]>(`/api/negocios${query}`, undefined, (payload) =>
-    toArray(payload).map(normalizeNegocio),
+  return requestNovoAuth<NegocioAdmin[]>(`/api/negocios${query}`, undefined, (data) =>
+    toArray(data).map(normalizeNegocio),
   );
 }
 
 export async function getNegocio(id: string) {
-  return requestNovoAuth<NegocioAdmin>(`/api/negocios/${id}`, undefined, normalizeNegocio);
+  return requestNovoAuth<NegocioAdmin>(
+    `/api/negocios/${id}`,
+    undefined,
+    normalizeNegocio,
+  );
 }
 
 export async function getUsuarios(params?: { negocioId?: string; q?: string }) {
@@ -234,13 +266,17 @@ export async function getUsuarios(params?: { negocioId?: string; q?: string }) {
 
   const query = search.size ? `?${search.toString()}` : "";
 
-  return requestNovoAuth<UsuarioAdmin[]>(`/api/usuarios${query}`, undefined, (payload) =>
-    toArray(payload).map(normalizeUsuario),
+  return requestNovoAuth<UsuarioAdmin[]>(`/api/usuarios${query}`, undefined, (data) =>
+    toArray(data).map(normalizeUsuario),
   );
 }
 
 export async function getUsuario(id: string) {
-  return requestNovoAuth<UsuarioAdmin>(`/api/usuarios/${id}`, undefined, normalizeUsuario);
+  return requestNovoAuth<UsuarioAdmin>(
+    `/api/usuarios/${id}`,
+    undefined,
+    normalizeUsuario,
+  );
 }
 
 export async function getUsuarioAccesos(id: string) {
