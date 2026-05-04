@@ -9,7 +9,7 @@ export function DashboardHeader() {
   const { setMobileSidebarOpen } = useUiStore();
 
   return (
-    <header className="sticky top-0 z-30 bg-[var(--surface-low)]">
+    <header className="sticky top-0 z-30 border-b border-[var(--outline-variant)] bg-[var(--surface-low)]">
       <div className="flex items-center justify-between gap-4 px-6 py-4">
         <div className="flex items-center gap-3">
           <button
@@ -21,16 +21,10 @@ export function DashboardHeader() {
           </button>
 
           <div>
-            <p
-              className="text-sm font-medium text-[var(--on-surface)]"
-              style={{ fontFamily: "var(--font-plus-jakarta), system-ui, sans-serif" }}
-            >
+            <p className="text-sm font-medium text-[var(--on-surface)]">
               Panel operativo
             </p>
-            <p
-              className="text-[10px] uppercase tracking-[0.12em] text-[var(--color-muted-foreground)]"
-              style={{ fontFamily: "var(--font-space-grotesk), system-ui, sans-serif" }}
-            >
+            <p className="font-data text-[10px] uppercase tracking-[0.12em] text-[var(--color-muted-foreground)]">
               Acceso con token de servicio
             </p>
           </div>

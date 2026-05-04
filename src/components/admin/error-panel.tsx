@@ -8,20 +8,14 @@ export function ErrorPanel({
   message: string;
 }) {
   return (
-    <div className="rounded-[0px] border border-[#c0392b]/30 bg-[#fdf2f2] px-5 py-4">
+    <div className="rounded-[4px] border border-[var(--error-border)] bg-[var(--error-surface)] px-5 py-4">
       <div className="flex items-start gap-3">
-        <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#9c2f2f]" />
+        <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[var(--error-text)]" />
         <div className="space-y-0.5">
-          <p
-            className="text-sm font-bold text-[#7a271a]"
-            style={{ fontFamily: "var(--font-space-grotesk), system-ui, sans-serif" }}
-          >
+          <p className="font-data text-sm font-bold text-[var(--error-heading)]">
             {title}
           </p>
-          <p
-            className="text-sm text-[#9c3d2f]"
-            style={{ fontFamily: "var(--font-plus-jakarta), system-ui, sans-serif" }}
-          >
+          <p className="text-sm text-[var(--error-text)]">
             {message}
           </p>
         </div>

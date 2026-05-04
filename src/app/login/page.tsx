@@ -34,31 +34,22 @@ export default async function LoginPage() {
           }}
         >
           {/* Icon badge */}
-          <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-[0px] bg-[var(--primary)]">
+          <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-[8px] bg-[var(--primary)]">
             <LockKeyhole className="h-5 w-5 text-white" />
           </div>
 
           {/* Eyebrow */}
-          <p
-            className="mb-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--primary)]"
-            style={{ fontFamily: "var(--font-space-grotesk), system-ui, sans-serif" }}
-          >
+          <p className="eyebrow mb-2 tracking-[0.18em]">
             CodeTek · Novo Suite
           </p>
 
           {/* Title */}
-          <h1
-            className="mb-1 text-4xl font-black tracking-[-0.02em] text-[var(--on-surface)] leading-none"
-            style={{ fontFamily: "var(--font-epilogue), system-ui, sans-serif" }}
-          >
+          <h1 className="font-display mb-1 text-4xl font-black tracking-[-0.02em] text-[var(--on-surface)] leading-none">
             Novo Admin
           </h1>
 
           {/* Subtitle */}
-          <p
-            className="mb-8 text-sm text-[var(--color-muted-foreground)]"
-            style={{ fontFamily: "var(--font-plus-jakarta), system-ui, sans-serif" }}
-          >
+          <p className="mb-8 text-sm text-[var(--color-muted-foreground)]">
             Panel interno del operador. Usa la clave maestra.
           </p>
 

@@ -22,6 +22,12 @@
   --color-accent: var(--primary);
   --color-accent-soft: rgba(53, 37, 205, 0.08);
   --color-accent-foreground: #ffffff;
+
+  /* Error state surfaces */
+  --error-surface: #fdf2f2;
+  --error-border: rgba(192, 57, 43, 0.3);
+  --error-text: #9c2f2f;
+  --error-heading: #7a271a;
 }
 
 @theme inline {
@@ -122,6 +128,16 @@ a {
 .btn-secondary:disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+/* ─── Eyebrow / label utility ───────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--primary);
 }
 
 /* ─── Skeleton pulse ────────────────────────────────────────────────── */

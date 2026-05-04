@@ -22,7 +22,7 @@ export function DashboardSidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden w-64 shrink-0 bg-[var(--surface-low)] lg:flex">
+      <aside className="hidden w-64 shrink-0 border-r border-[var(--outline-variant)] bg-[var(--surface-low)] lg:flex">
         <SidebarContent pathname={pathname} />
       </aside>
 
@@ -62,17 +62,11 @@ function SidebarContent({
   return (
     <div className="flex min-h-full flex-col gap-10 px-6 py-8">
       {/* Brand */}
-      <div className="space-y-1">
-        <p
-          className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--primary)]"
-          style={{ fontFamily: "var(--font-space-grotesk), system-ui, sans-serif" }}
-        >
+      <div className="space-y-1 pb-6 border-b border-[var(--outline-variant)]">
+        <p className="eyebrow tracking-[0.18em]">
           CodeTek
         </p>
-        <h2
-          className="text-2xl font-extrabold tracking-[-0.02em] text-[var(--on-surface)] leading-none"
-          style={{ fontFamily: "var(--font-epilogue), system-ui, sans-serif" }}
-        >
+        <h2 className="font-display text-2xl font-extrabold tracking-[-0.02em] text-[var(--on-surface)] leading-none">
           Novo Admin
         </h2>
         <p className="text-xs text-[var(--color-muted-foreground)] mt-1">
@@ -95,11 +89,11 @@ function SidebarContent({
               href={item.href}
               onClick={onNavigate}
               className={cn(
-                "flex items-center gap-3 px-3 py-3 text-sm font-medium transition-colors rounded-[0px]",
+                "flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors border-l-2",
                 "[font-family:var(--font-plus-jakarta),system-ui,sans-serif]",
                 active
-                  ? "bg-[var(--primary)] text-white"
-                  : "text-[var(--on-surface)] hover:bg-[var(--surface)]",
+                  ? "border-[var(--primary)] bg-[var(--color-accent-soft)] text-[var(--primary)] font-semibold"
+                  : "border-transparent text-[var(--on-surface)] hover:bg-[var(--surface)] hover:border-[var(--outline-variant)]",
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />

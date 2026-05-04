@@ -63,10 +63,7 @@ export function LoginForm() {
       </div>
 
       {error ? (
-        <p
-          className="border border-[#c0392b]/30 bg-[#fdf2f2] px-3 py-2.5 text-sm text-[#9c2f2f] rounded-[0px]"
-          style={{ fontFamily: "var(--font-plus-jakarta), system-ui, sans-serif" }}
-        >
+        <p className="rounded-[4px] border border-[var(--error-border)] bg-[var(--error-surface)] px-3 py-2.5 text-sm text-[var(--error-text)]">
           {error}
         </p>
       ) : null}
