@@ -22,6 +22,7 @@ export type UsuarioAdmin = {
   nombre: string;
   email: string;
   rolGlobal: string;
+  activo?: boolean;
   productos?: string[];
   negocioId?: string | null;
   negocio?: {

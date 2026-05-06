@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { requireAdminSession, toErrorResponse } from "@/app/api/admin/_helpers";
-import { deleteUsuario, updateUsuario } from "@/lib/novo-auth-api";
+import { updateUsuario } from "@/lib/novo-auth-api";
 
 export async function PATCH(
   request: Request,
@@ -15,6 +15,7 @@ export async function PATCH(
     email?: string;
     rolGlobal?: string;
     productos?: string[];
+    activo?: boolean;
   } | null;
 
   if (!body) {
@@ -28,24 +29,8 @@ export async function PATCH(
     email: body.email,
     rolGlobal: body.rolGlobal,
     productos: body.productos,
+    activo: body.activo,
   });
-
-  if (!result.ok) {
-    return toErrorResponse(result.message);
-  }
-
-  return NextResponse.json({ ok: true });
-}
-
-export async function DELETE(
-  _request: Request,
-  context: { params: Promise<{ id: string }> },
-) {
-  const authError = await requireAdminSession();
-  if (authError) return authError;
-
-  const { id } = await context.params;
-  const result = await deleteUsuario(id);
 
   if (!result.ok) {
     return toErrorResponse(result.message);
