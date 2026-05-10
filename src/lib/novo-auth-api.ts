@@ -120,6 +120,7 @@ function normalizeUsuario(rawValue: unknown): UsuarioAdmin {
     nombre: getFirstString(raw, ["nombre", "name", "fullName"], "Sin nombre"),
     email: getFirstString(raw, ["email", "correo"], "Sin email"),
     rolGlobal: getFirstString(raw, ["rolGlobal", "rol_global", "rol"], "Sin rol"),
+    activo: typeof raw.activo === "boolean" ? raw.activo : true,
     productos: getFirstStringArray(raw, [
       "productos",
       "productosActivos",
@@ -339,6 +340,7 @@ export async function updateUsuario(input: {
   email?: string;
   rolGlobal?: string;
   productos?: string[];
+  activo?: boolean;
 }) {
   return requestNovoAuth<unknown>(`/api/usuarios/${input.id}`, {
     method: "PATCH",
@@ -347,6 +349,7 @@ export async function updateUsuario(input: {
       email: input.email,
       rolGlobal: input.rolGlobal,
       productos: input.productos,
+      ...(input.activo !== undefined ? { activo: input.activo } : {}),
     }),
   });
 }
